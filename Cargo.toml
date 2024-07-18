@@ -1,0 +1,13 @@
+[package]
+name = "ias"
+version = "0.1.0"
+authors = ["Andrew Halle <me@andrewhalle.dev>"]
+edition = "2021"
+description = "An interactive assembly language interpreter"
+repository = "https://github.com/andrewhalle/ias"
+license = "MIT OR Apache-2.0"
+keywords = ["assembly", "interpreter"]
+
+
+[dependencies]
+tempfile = "3.10.1"
