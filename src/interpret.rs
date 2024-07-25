@@ -5,7 +5,10 @@ use std::{
 
 use anyhow::Result;
 use nix::{
-    sys::{ptrace, wait},
+    sys::{
+        ptrace::{self, regset::NT_PRSTATUS},
+        wait,
+    },
     unistd::{self, ForkResult, Pid},
 };
 
@@ -26,9 +29,15 @@ pub(super) fn run_interpreter_loop(tracee: Pid, _pipe_to_tracee: OwnedFd) -> Res
         let wait_status = wait::waitpid(tracee, None)?;
         stdout.flush()?;
         println!("child stopped: wait status {wait_status:?}");
-        println!("<dump registers here>");
+        dump_registers(tracee)?;
         line = String::new();
     }
+}
+
+fn dump_registers(tracee: Pid) -> Result<()> {
+    let registers = ptrace::getregset::<NT_PRSTATUS>(tracee)?;
+    println!("registers: {registers:#?}");
+    Ok(())
 }
 
 // Once we're in the child, we can unwrap freely, our parent will be notified if we panic.
