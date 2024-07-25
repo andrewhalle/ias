@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use std::{fs, io, path::Path, process::Command};
 
 /// Assemble a program into machine code.
