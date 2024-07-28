@@ -24,7 +24,6 @@ pub(super) fn run_interpreter_loop(tracee: Pid, mut pipe_to_tracee: PipeWriter) 
             println!();
         }
         pipe_to_tracee.write_all(line.as_bytes())?;
-        println!("<send line to tracee>");
         ptrace::cont(tracee, None)?;
         let wait_status = wait::waitpid(tracee, None)?;
         stdout.flush()?;
